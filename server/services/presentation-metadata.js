@@ -35,7 +35,7 @@ class PresentationMetadata {
         let timelines = data.timelines
 
         PresentationMetadata
-            .fetchFileCurrentContent((readStream, streamChunks) => {
+            .fetchFileCurrentContent(false, (readStream, streamChunks) => {
                 let currentVideos = streamChunks.videos
 
                 // sign an ID on each timeline
@@ -79,7 +79,7 @@ class PresentationMetadata {
      */
     static update(updatedData) {
         PresentationMetadata
-            .fetchFileCurrentContent((readStream, streamChunks) => {
+            .fetchFileCurrentContent(false, (readStream, streamChunks) => {
                 let videos = streamChunks.videos
 
                 videos.map(video => {
