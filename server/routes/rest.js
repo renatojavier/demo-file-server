@@ -1,18 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { create, update, remove } = require('../services/presentation-metadata')
-
-const mockCreate = {
-    name: 'SB-6025 Fixing wordings for some migration form referencing',
-    filename: '6025',
-    timelines: [
-        {
-            "label": "Long label name to test the overflow appearance",
-            "seek": "12:45"
-        }
-    ]
-}
+const { create, update, remove, fetchFileCurrentContent } = require('../services/presentation-metadata')
 
 const mockUpdate = {
     "id": "vd-p4x9BXC520BgZS3V",
@@ -31,13 +20,19 @@ const mockRemove = {
     timelineId: 'tm-Ujh9d3QMkgC25irE'
 }
 
-// create(mockCreate)
 // update(mockUpdate)
 // remove(true, mockRemove)
-
 router.post('/create', (req, res, next) => {
     create(req.body)
     res.send(req.body)
+})
+
+router.get('/view', (req, res, next) => {
+    fetchFileCurrentContent(false, (readStream, streamChunks) => {
+        res.json(streamChunks)
+    }).on('error', error => {
+         console.error(error)
+    })
 })
 
 router.post('/test', (req, res, next) => {
