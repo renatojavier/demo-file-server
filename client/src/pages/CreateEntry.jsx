@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Promise from 'es6-promise'
 import 'isomorphic-fetch'
+import '../stylesheet/normalize.css'
 
 import FormTimelineList from '../components/FormTimelineList.jsx'
 
@@ -8,8 +9,8 @@ Promise.polyfill()
 
 class CreateEntry extends Component {
 	state = {
-		videoName: 'SB-6025 Fixing wordings for some migration form referencing',
-		videoFileName: '6025',
+		videoName: '',
+		videoFileName: '',
 		timelines: []
 	}
 
@@ -21,8 +22,6 @@ class CreateEntry extends Component {
 		this.onSubmit = this.onSubmit.bind(this)
 		this.onChange = this.onChange.bind(this)
 		this.onTimelineClick = this.onTimelineClick.bind(this)
-		// this.onTimelineLabelChange = this.onTimelineLabelChange.bind(this)
-		// this.onTimelineSeekChange = this.onTimelineSeekChange.bind(this)
 		this.onTimelinePropsChange = this.onTimelinePropsChange.bind(this)
 		this.devCheckState = this.devCheckState.bind(this)
 	}
@@ -31,7 +30,7 @@ class CreateEntry extends Component {
 	componentDidUpdate() { }
 
 	devCheckState() {
-		let state = this.state
+		
 		debugger
 	}
 
@@ -74,6 +73,8 @@ class CreateEntry extends Component {
 			if (timeline.key === key) {
 				timeline[type] = event.target.value
 			}
+
+			return 0
 		})
 
 		this.setState(timelinesProp)
@@ -114,6 +115,8 @@ class CreateEntry extends Component {
 						} else {
 							this.formSubmissionReady = true
 						}
+
+						return 0
 					})
 				}
 			}
@@ -155,11 +158,11 @@ class CreateEntry extends Component {
 				<form onSubmit={this.onSubmit} autoComplete='false' noValidate>
 					<p>
 						<label htmlFor='video-name'>Video label</label>&nbsp;
-						<input id='video-name' onChange={this.onChange('videoName')} value={this.state.videoName} autoComplete='true' />
+						<input id='video-name' onChange={this.onChange('videoName')} value={this.state.videoName} autoFocus={true} />
 					</p>
 					<p>
 						<label htmlFor='video-name'>File name(excluding <small><code>.mp4</code></small>)</label>&nbsp;
-						<input id='video-name' onChange={this.onChange('videoFileName')} value={this.state.videoFileName} autoComplete='true' />
+						<input id='video-name' onChange={this.onChange('videoFileName')} value={this.state.videoFileName} />
 					</p>
 					<button id='button-add-timeline' onClick={this.onTimelineClick}>Add timeline</button>
 

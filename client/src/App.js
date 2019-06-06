@@ -6,10 +6,6 @@ import ViewList from './pages/ViewList.jsx'
 
 class App extends Component {
 
-	constructor(props) {
-		super(props)
-	}
-
 	render() {
 		return (
 			<Router>

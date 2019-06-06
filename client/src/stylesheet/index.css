@@ -9,10 +9,44 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-.submission-ready {
-	display: block;
+table {
+	width: 100%;
 }
 
-.submission-not-ready {
-	/* display: none; */
+th, td {
+	width: 50%;
+	border: 1px solid #ccc;
+	padding: 5px;
 }
+
+.video-container-inner {
+	padding: 20px 30px;
+	border-bottom: 1px solid #ccc;
+}
+
+.panel-container {
+	display: flex;
+}
+
+.panels {
+	align-items: center;
+	padding: 5px 20px;
+    box-sizing: border-box;
+}
+
+#panel-view {
+	flex-grow: 0.5;
+}
+
+#panel-update {
+	flex-grow: 1.5;
+	border-left: 1px solid #ccc;
+}
+
+.panel-blur {
+	opacity: 0.3;
+	user-select: none;
+	pointer-events: none;
+}
+
+
