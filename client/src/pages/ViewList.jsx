@@ -30,10 +30,11 @@ class ViewList extends Component {
         this.onChangeVideoLevel = this.onChangeVideoLevel.bind(this)
         this.onChangeTimelineLevel = this.onChangeTimelineLevel.bind(this)
         this.onRemoveVideo = this.onRemoveVideo.bind(this)
+        this.onRemoveTimeline = this.onRemoveTimeline.bind(this)
     }
 
     componentDidMount() {
-        this.fetchVideoList()
+        this._fetchVideoList()
     }
 
     devCheckState(event) {
@@ -99,7 +100,7 @@ class ViewList extends Component {
     onCancelUpdate(event) {
         event.preventDefault()
 
-        this.fetchVideoList({
+        this._fetchVideoList({
             activateUpdatePanel: false,
             update: {
                 id: '',
@@ -121,7 +122,7 @@ class ViewList extends Component {
             headers: { 'Content-Type': 'application/json' }
         }
         const onUpdateCommonCallback = (statusText) => {
-            this.fetchVideoList({
+            this._fetchVideoList({
                 activateUpdatePanel: false,
                 update: {
                     id: '',
@@ -151,13 +152,57 @@ class ViewList extends Component {
     onRemoveVideo(event) {
         event.preventDefault()
 
-        debugger
+        this._fetchRemove({
+            body: {
+                doesEntireVideo: Boolean(event.target.dataset.removeEntire),
+                params: {
+                    videoId: event.target.dataset.target
+                }
+            }
+        })
+    }
+
+    onRemoveTimeline(event) {
+        event.preventDefault()
+
+        this._fetchRemove({
+            body: {
+                doesEntireVideo: false,
+                params: {
+                    timelineId: event.target.dataset.target
+                }
+            }
+        })
+    }
+
+    _fetchRemove(optionRequestBody) {
+        const self = this
+        const REST_REMOVE_URI = `${this.DOMAIN_REST_ENDPOINT}/rest/remove`
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        }
+
+        Object.assign(options, optionRequestBody)
+
+        options.body = JSON.stringify(options.body)
+
+        fetch(REST_REMOVE_URI, options)
+            .then(response => response.json())
+            .then(json => {
+                self._fetchVideoList(false, () => {
+                    console.log('Remove successful')
+                })
+            })
+            .catch(error => {
+                alert(error)
+            })
 
         return
     }
     /** end remove */
 
-    fetchVideoList(otherProps = false) {
+    _fetchVideoList(otherProps = false, callback = false) {
         const REST_VIEW_URI = `${this.DOMAIN_REST_ENDPOINT}/rest/view`
         const option = {
             encoding: 'utf8'
@@ -167,6 +212,8 @@ class ViewList extends Component {
             .then(response => response.json())
             .then(responseJson => {
                 let videosProp = { ...this.state }
+                
+                videosProp.view.videos = [] // neutralise
 
                 responseJson.videos.map((video, index) => {
                     videosProp.view.videos.push(video)
@@ -176,6 +223,10 @@ class ViewList extends Component {
 
                 if (otherProps) {
                     Object.assign(videosProp, otherProps)
+                }
+
+                if (callback) {
+                    callback.call([])
                 }
 
                 this.setState(videosProp)
@@ -219,8 +270,8 @@ class ViewList extends Component {
                                                         <tr key={index}>
                                                             <td>{timeline.label}</td>
                                                             <td align='center'>{timeline.seek}</td>
-                                                            <td style={{ borderColor: 'white' }}>
-                                                                <button data-target={timeline.id}>X</button>
+                                                            <td style={{ borderColor: 'white', display: video.timelines.length < 2 ? 'none' : 'block' }}>
+                                                                <button data-target={timeline.id} data-remove-entire={false} onClick={this.onRemoveTimeline}>X</button>
                                                             </td>
                                                         </tr>
                                                     )
