@@ -161,7 +161,7 @@ class CreateEntry extends Component {
 						<input id='video-name' onChange={this.onChange('videoName')} value={this.state.videoName} autoFocus={true} />
 					</p>
 					<p>
-						<label htmlFor='video-name'>File name(excluding <small><code>.mp4</code></small>)</label>&nbsp;
+						<label htmlFor='video-name'>File name</label>&nbsp;
 						<input id='video-name' onChange={this.onChange('videoFileName')} value={this.state.videoFileName} />
 					</p>
 					<button id='button-add-timeline' onClick={this.onTimelineClick}>Add timeline</button>

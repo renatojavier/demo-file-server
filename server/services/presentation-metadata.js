@@ -50,7 +50,8 @@ class PresentationMetadata {
                     id: id,
                     name: name,
                     filename: filename,
-                    timelines: timelines
+                    timelines: timelines,
+                    completed: false
                 })
 
                 const writeStream = fs.createWriteStream(URI_DEMO_METADATA, STREAM_OPTION)
@@ -87,17 +88,20 @@ class PresentationMetadata {
 
                         video.name = (updatedData.name) ? updatedData.name : video.name
                         video.filename = (updatedData.filename) ? updatedData.filename : video.filename
+                        video.completed = (updatedData.completed) ? updatedData.completed : video.completed
 
-                        if (updatedData.timelines.length) {
-                            video.timelines.map(timeline => { // loop timeline from file
-                                updatedData.timelines.map(updatedTimeline => { // loop timeline from param
+                        if (updatedData.timelines) {
+                            if (updatedData.timelines.length) {
+                                video.timelines.map(timeline => { // loop timeline from file
+                                    updatedData.timelines.map(updatedTimeline => { // loop timeline from param
 
-                                    if (timeline.id === updatedTimeline.id) { /** timeline props level update */
-                                        Object.assign(timeline, updatedTimeline)
-                                    }
+                                        if (timeline.id === updatedTimeline.id) { /** timeline props level update */
+                                            Object.assign(timeline, updatedTimeline)
+                                        }
 
-                                }) // END loop timeline from param
-                            }) // END  loop timeline from file
+                                    }) // END loop timeline from param
+                                }) // END  loop timeline from file
+                            }
                         }
 
                     }
