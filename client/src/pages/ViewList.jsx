@@ -250,7 +250,7 @@ class ViewList extends Component {
                                         <p className="video-name">
                                             <small>[{index + 1}]</small>&emsp;
                                             <span>{video.name}</span>&emsp;
-                                            <small><code>{video.filename}.mp4</code></small>&emsp;
+                                            <small><code>{video.filename}</code></small>&emsp;
                                             <span style={{ float: 'right' }}>
                                                 <button data-target={video.id} onClick={this.onOpenUpdate}>Update</button>&nbsp;
                                                 <button data-target={video.id} data-remove-entire={true} onClick={this.onRemoveVideo}>Remove video</button>
